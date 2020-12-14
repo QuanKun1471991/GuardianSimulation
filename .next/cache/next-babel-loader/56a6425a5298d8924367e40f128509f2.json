@@ -1,0 +1,1 @@
+{"ast":null,"code":"export var LayoutActions;\n\n(function (LayoutActions) {\n  LayoutActions[\"SET_MENU_COLLAPSED\"] = \"[layout] set menu collapsed\";\n})(LayoutActions || (LayoutActions = {}));","map":null,"metadata":{},"sourceType":"module"}

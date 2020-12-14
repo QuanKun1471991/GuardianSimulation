@@ -1,0 +1,1 @@
+{"ast":null,"code":"var __jsx = React.createElement;\nimport React, { memo } from \"react\";\n\nfunction PublicLayout(props) {\n  const {\n    children\n  } = props;\n  return __jsx(React.Fragment, null, children);\n}\n\nexport default /*#__PURE__*/memo(PublicLayout);","map":null,"metadata":{},"sourceType":"module"}

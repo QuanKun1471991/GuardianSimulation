@@ -1,0 +1,44 @@
+.login {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url("/share/login_background.jpg");
+
+  .container {
+    min-width: 500px;
+    min-height: 400px;
+    padding: 10px;
+    
+    .header {
+      font-size: 30px;
+      color: #555;
+      line-height: 1.2;
+      text-transform: uppercase;
+      width: 100%;
+      display: block;
+    }
+    .title {
+      font-size: 13px;
+      color: #555;
+      line-height: 1.4;
+      text-transform: uppercase;
+    }
+    .login-form-button {
+      width: 100%;
+    }
+    .header-contain {
+      text-align: center;
+    }
+  }
+  .wrap-login {
+    width: 560px;
+    background: #fff;
+    border-radius: 10px;
+    position: relative;
+    padding-right: 85px;
+    padding-left: 85px;
+    padding-bottom: 55px;
+    padding-top: 55px;
+  }
+}

@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { createMemoSelector } from \"services/_base/selectors\";\nexport var LayoutSelector = createMemoSelector(function (state) {\n  var isCollapsed = state.layout.isCollapsed;\n  return {\n    isCollapsed: isCollapsed\n  };\n}, function (layoutResult) {\n  return layoutResult;\n});","map":null,"metadata":{},"sourceType":"module"}

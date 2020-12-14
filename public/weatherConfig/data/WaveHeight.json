@@ -1,0 +1,31 @@
+{
+	"timelist": {
+		"Type": "JSON",
+		"url": "https://wrap.wni.co.jp/WRAP/wrap-pri/data/WX_WNI_WWIII_LOWRESO_BLEND/index.json",
+		"retain": true,
+		"update_interval": 3600
+	},
+	"data": {
+		"Type": "GeoTiff",
+		"name": "WX_WNI_WWIII_LOWRESO_BLEND_WaveHeight",
+		"url": "https://wrap.wni.co.jp/WRAP/wrap-pri/data/WX_WNI_WWIII_LOWRESO_BLEND/%element%/SFC/%basetime%/%validtime%.tiff",
+		"cache": true,
+		"download_max": 32,
+		"Grid": {
+			"Width": 360,
+			"Height": 181,
+			"LatBase": 90.0,
+			"LonBase": 0.0,
+			"LatInterval": 1.0,
+			"LonInterval": 1.0,
+			"MinValue": -100,
+			"MaxValue": 100,
+			"element": {
+				"WNIPRDIR": {
+					"MinValue": 0,
+					"MaxValue": 360
+				}
+			}
+		}
+	}
+}

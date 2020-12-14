@@ -1,0 +1,45 @@
+.root {
+  position: fixed,
+}
+.map {
+  min-height: 532px;
+  position: relative;
+  max-height: 1000px;
+  height: calc(100vh - 64px);
+  min-width: 1500px;
+  outline: none;
+  .ol-zoom {
+    margin-right: 98%;
+    margin-left: 2px;
+    margin-top: 3px;
+  }
+  .ol-rotate {
+    display: none;
+  }
+  .ol-attribution {
+    display: none;
+  }
+}
+.drawerContent {
+  margin-left: 150px;
+  z-index: 999;
+}
+.isCollapsed {
+  margin-left: 200px;
+}
+.WeatherSetting{
+  float: left;
+  
+}
+.WeatherSettingSelect {
+  width: 150px;
+}
+.WeatherSettingSlider {
+  top: 10px;
+}
+
+.simulationSetting{
+  position: 'absolute' as 'absolute';
+  top: 50;
+  right: 0;
+}

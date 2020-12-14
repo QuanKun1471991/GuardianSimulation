@@ -1,0 +1,17 @@
+{
+    "Name" : "WX_MSC_IceBerg",
+    "DataHandler" : "GeoTiff",
+    "Attributes" : {
+        "TimeList" : "https://wrap.wni.co.jp/WRAP/wrap-pri/data/WX_MSC_IceBerg/index.json",
+        "File" : "https://wrap.wni.co.jp/WRAP/wrap-pri/data/WX_MSC_IceBerg/ICEBRG/000/%basetime%/%validtime%.tiff",
+        "DataGrid" : {
+            "Width" : 360,
+            "Height" : 181,
+            "LatBase" : 90.0,
+            "LonBase" : 0.0,
+            "LatInterval" : 1.0,
+            "LonInterval" : 1.0
+        },
+        "UpdateInterval" : 3600
+    }
+}

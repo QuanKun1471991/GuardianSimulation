@@ -1,0 +1,22 @@
+{
+    "timelist": {
+        "Type": "JSON",
+        "url": "https://wrap.wni.co.jp/WRAP/wrap-pri/data/WX_NOAA_Ensemble/index.json",
+        "retain": true,
+        "update_interval": 3600
+    },
+    "data": {
+        "Type": "GeoTiff",
+        "name": "WX_NOAA_Ensemble",
+        "url": "https://wrap.wni.co.jp/WRAP/wrap-pri/data/WX_NOAA_Ensemble/%element%/000/%basetime%/%validtime%.tiff",
+        "cache": true,
+        "Grid": {
+            "Width": 360,
+            "Height": 181,
+            "LatBase": 90.0,
+            "LonBase": 0.0,
+            "LatInterval": 1.0,
+            "LonInterval": 1.0
+        }
+    }
+}
