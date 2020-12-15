@@ -1,9 +1,0 @@
-{
-    "Name" : "WX_WNI_TropicalStorm",
-    "DataHandler" : "IndexedGeoJSON",
-    "Attributes" : {
-        "Index" : "https://wrap.wni.co.jp/WRAP/wrap-pri/data/WX_WNI_TropicalStorm/index.json",
-        "File" : "https://wrap.wni.co.jp/WRAP/wrap-pri/data/WX_WNI_TropicalStorm/TropicalStorm/%id%.json",
-        "UpdateInterval" : 3600
-    }
-}
