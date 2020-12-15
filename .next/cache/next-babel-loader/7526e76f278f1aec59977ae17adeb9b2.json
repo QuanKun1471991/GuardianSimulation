@@ -1,1 +1,0 @@
-{"ast":null,"code":"import _isEqual from \"lodash/isEqual\";\nimport { createSelectorCreator, defaultMemoize } from \"reselect\";\nexport var createMemoSelector = createSelectorCreator(defaultMemoize, _isEqual);","map":null,"metadata":{},"sourceType":"module"}

@@ -1,1 +1,0 @@
-{"ast":null,"code":"export let VesselActions;\n\n(function (VesselActions) {\n  VesselActions[\"FETCH_ALL\"] = \"[vessel] fetch all\";\n  VesselActions[\"FETCH_ALL_SUCCESS\"] = \"[vessel] fetch all success\";\n  VesselActions[\"FETCH_ALL_FAILED\"] = \"[vessel] fetch all failed\";\n})(VesselActions || (VesselActions = {}));","map":null,"metadata":{},"sourceType":"module"}

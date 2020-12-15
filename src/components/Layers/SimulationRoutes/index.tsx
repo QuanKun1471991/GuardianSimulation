@@ -1,12 +1,14 @@
-import { connect, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import React, { useEffect, useState } from "react";
 
-import { flowRight, compact } from "lodash";
+import { compact, round } from "lodash";
 import SimulationSettings from "components/SimulationSettings";
 import {
   convertCoord2LongLat,
   convertHeadingtoDegree,
   convertLongLat2Coords,
+  getDistanceBetweenPoints,
+  convertKnotToMeter,
 } from "core/model/Map";
 import { formatDateTimeUTC, YYYY_MM_DD_HH_MM_SS } from "core/utils/datetime";
 import moment from "moment";
@@ -16,7 +18,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import { simulationFormatMessage, aisFakeMessage } from "core/model/Vessel";
+import { simulationFormatMessage } from "core/model/Vessel";
 import Map from "ol/Map";
 import { BaseFunctions } from "services/vessel/actions";
 import VesselServices from "services/vessel/api";
@@ -45,7 +47,6 @@ const styleFunction = (feature: any) => {
 
   geometry.forEachSegment(function (start: any, end: any) {
     const rotation = getRotation(start, end);
-    console.log(`rotation${rotation}`);
     // arrows
     styles.push(
       new ol.style.Style({
@@ -63,10 +64,17 @@ const styleFunction = (feature: any) => {
   return styles;
 };
 
+const simulationLayer = new ol.layer.Vector({
+  source: vectorSource,
+  style: styleFunction,
+});
+
 interface SimulationRoutesProps {
   guardianMap: Map;
   selectedVessel: any;
 }
+
+const DEFAULT_SPEED = 25;
 
 function Index({ guardianMap, selectedVessel }: SimulationRoutesProps) {
   const dispatch = useDispatch();
@@ -80,31 +88,16 @@ function Index({ guardianMap, selectedVessel }: SimulationRoutesProps) {
     },
     mmsi,
   } = selectedVessel;
-  const createdAtTime = moment().toString();
+  const createdAtTime = moment().subtract(1, "year");
   const [openDialog, setOpenDialog] = React.useState(false);
+  let sketch;
 
   const draw = new ol.interaction.Draw({
     source: vectorSource,
     type: "LineString",
   });
 
-  const simulationLayer = new ol.layer.Vector({
-    source: vectorSource,
-    style: styleFunction,
-  });
-
-  useEffect(() => {
-    let increaseMinutes = 0;
-    if (showSimulationRoutes && selectedVessel.name) {
-      guardianMap.addLayer(simulationLayer);
-      guardianMap.addInteraction(draw);
-    }
-    if (!showSimulationRoutes) {
-      guardianMap.getInteractions().pop();
-      simulationLayer.getSource().clear();
-      guardianMap.removeLayer(simulationLayer);
-    }
-
+  const handleDrawEnd = () => {
     draw.on("drawend", function (evt: any) {
       const { feature } = evt;
       const coords = feature.getGeometry().getCoordinates();
@@ -115,19 +108,36 @@ function Index({ guardianMap, selectedVessel }: SimulationRoutesProps) {
           const heading = convertHeadingtoDegree(
             getRotation(coords[index - 1], coordinate)
           );
+
           const longLatCoord = convertCoord2LongLat(coordinate);
+          const distance = round(
+            getDistanceBetweenPoints(
+              convertCoord2LongLat(coords[index - 1]),
+              longLatCoord
+            )
+          );
+
+          const movingTime = round(
+            distance / convertKnotToMeter(DEFAULT_SPEED)
+          );
           const timeStamp = formatDateTimeUTC(
-            moment(createdAtTime).add(increaseMinutes, "minutes").toString(),
+            createdAtTime.add(movingTime, "seconds").toString(),
+            YYYY_MM_DD_HH_MM_SS
+          );
+          const createdAt = formatDateTimeUTC(
+            moment().toString(),
             YYYY_MM_DD_HH_MM_SS
           );
 
           const message = simulationFormatMessage({
             mmsi,
             heading,
+            distance,
             longLatCoord,
             timeStamp,
+            createdAt,
+            movingTime,
           });
-          increaseMinutes += 5;
 
           return message;
         }
@@ -145,8 +155,24 @@ function Index({ guardianMap, selectedVessel }: SimulationRoutesProps) {
       );
 
       setCurrentFeature(feature);
+
       guardianMap.removeInteraction(draw);
     });
+  };
+
+  useEffect(() => {
+    if (showSimulationRoutes && selectedVessel.name) {
+      guardianMap.removeLayer(simulationLayer);
+      guardianMap.addLayer(simulationLayer);
+      guardianMap.addInteraction(draw);
+    }
+    if (!showSimulationRoutes) {
+      guardianMap.removeInteraction(draw);
+      simulationLayer.getSource().clear();
+      guardianMap.removeLayer(simulationLayer);
+    }
+    handleDrawEnd();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showSimulationRoutes, selectedVessel.name]);
 
@@ -170,12 +196,16 @@ function Index({ guardianMap, selectedVessel }: SimulationRoutesProps) {
               getRotation(updateCoords[index - 1], coordinate)
             );
             const longLatCoord = convertCoord2LongLat(coordinate);
-            const timeStamp = SimulationRoutesData[index - 1].timestamp;
-            const { speed } = SimulationRoutesData[index - 1];
-            const { createdAt } = SimulationRoutesData[index - 1];
+            const {
+              speed,
+              distance,
+              timeStamp,
+              createdAt,
+            } = SimulationRoutesData[index - 1];
             const message = simulationFormatMessage({
               mmsi,
               heading,
+              distance,
               longLatCoord,
               timeStamp,
               speed,
@@ -202,12 +232,14 @@ function Index({ guardianMap, selectedVessel }: SimulationRoutesProps) {
   }, [update]);
 
   const handleClickClearDraw = () => {
-    guardianMap.getInteractions().pop();
-    guardianMap.addInteraction(draw);
+    const isDelete = guardianMap.removeInteraction(draw);
+    return isDelete && guardianMap.addInteraction(draw);
   };
 
   const handleClickClearDrawLayer = () => {
     simulationLayer.getSource().clear();
+    guardianMap.removeInteraction(draw);
+    guardianMap.addInteraction(draw);
 
     dispatch(
       BaseFunctions.setState({
@@ -218,6 +250,7 @@ function Index({ guardianMap, selectedVessel }: SimulationRoutesProps) {
         },
       })
     );
+    handleDrawEnd();
   };
 
   const handleClickSend = () => {

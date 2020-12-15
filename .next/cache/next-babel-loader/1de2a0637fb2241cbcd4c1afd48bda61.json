@@ -1,1 +1,0 @@
-{"ast":null,"code":"export var forEach = function forEach(e, iterate) {\n  var keys = Object.keys(e);\n  return keys.forEach(function (k, i) {\n    return iterate({\n      key: k,\n      value: e[k]\n    }, i);\n  });\n};","map":null,"metadata":{},"sourceType":"module"}

@@ -1,1 +1,0 @@
-{"ast":null,"code":"export async function delay(time) {\n  return new Promise(resolve => setTimeout(resolve, time));\n}","map":null,"metadata":{},"sourceType":"module"}

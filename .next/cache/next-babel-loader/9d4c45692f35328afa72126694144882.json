@@ -1,1 +1,0 @@
-{"ast":null,"code":"import { createMemoSelector } from \"services/_base/selectors\";\nexport const LayoutSelector = createMemoSelector(state => {\n  const {\n    isCollapsed\n  } = state.layout;\n  return {\n    isCollapsed\n  };\n}, layoutResult => layoutResult);","map":null,"metadata":{},"sourceType":"module"}

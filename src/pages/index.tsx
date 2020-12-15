@@ -4,7 +4,9 @@ import { memo, useCallback, useEffect, useState } from "react";
 import "assets/styles/dashboard.scss";
 import { useInjectReducer } from "core/hooks/useInjectReducer";
 import useInjectSaga from "core/hooks/useInjectSaga";
-import vesselReducer from "services/vessel/reducers";
+import vesselReducer, {
+  initialSimulationRoutes,
+} from "services/vessel/reducers";
 import portReducer from "services/port/reducers";
 import vesselSaga from "services/vessel/sagas";
 import portSaga from "services/port/sagas";
@@ -77,17 +79,18 @@ const Index: NextPage = () => {
   const [isShowVesselInfo, setIsShowVesselInfo] = useState(false);
   const {
     name,
+    imo,
     simulationRoutes: { show },
   } = selectedVessel;
 
   const zoomAfterClick = useCallback(
     (coordinates: []) => {
       const view = guardianMap.getView();
-      const zoom = view.getZoom();
+
       view.animate({
-        zoom: zoom >= 6.5 ? zoom : 6.5,
+        zoom: 10,
         center: coordinates,
-        duration: 600,
+        duration: 0,
       });
     },
     [guardianMap]
@@ -162,6 +165,7 @@ const Index: NextPage = () => {
             name: featureClicked.get("name"),
             imo: featureClicked.get("imo"),
             mmsi: featureClicked.get("mmsi"),
+            simulationRoutes: initialSimulationRoutes,
           })
         );
       } else {
@@ -172,6 +176,7 @@ const Index: NextPage = () => {
     if (guardianMap) {
       guardianMap.on("click", handleClickMap);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [guardianMap, zoomAfterClick, dispatch]);
 
   const handleClickSimulation = () => {
@@ -179,10 +184,7 @@ const Index: NextPage = () => {
       BaseFunctions.setState({
         field: "selectedVessel",
         simulationRoutes: {
-          data: [],
-          loading: false,
-          update: false,
-          error: null,
+          ...initialSimulationRoutes,
           show: !show,
         },
       })

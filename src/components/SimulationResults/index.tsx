@@ -67,7 +67,9 @@ function Index({ selectedVessel }: SimulationResultProps) {
               <TableCell align="center">Longitude</TableCell>
               <TableCell align="center">Latitude</TableCell>
               <TableCell align="center">Heading</TableCell>
-              <TableCell align="center">Speed</TableCell>
+              <TableCell align="center">Distance (m)</TableCell>
+              <TableCell align="center">Speed (knot)</TableCell>
+              <TableCell align="center">Moving Time (hours)</TableCell>
               <TableCell align="center">Timestamp</TableCell>
               <TableCell align="center">Created_at</TableCell>
               <TableCell align="center">
@@ -125,9 +127,33 @@ function Index({ selectedVessel }: SimulationResultProps) {
                 <TableCell className={classes.tableCell} align="center">
                   <TextField
                     id="standard-basic"
+                    value={get(row, "distance")}
+                    disabled
+                    onChange={(e) =>
+                      handleUpdateRow(index, "distance", e.currentTarget.value)
+                    }
+                  />
+                </TableCell>
+                <TableCell className={classes.tableCell} align="center">
+                  <TextField
+                    id="standard-basic"
                     value={get(row, "speed")}
                     onChange={(e) =>
                       handleUpdateRow(index, "speed", e.currentTarget.value)
+                    }
+                  />
+                </TableCell>
+                <TableCell className={classes.tableCell} align="center">
+                  <TextField
+                    id="standard-basic"
+                    value={get(row, "movingTime")}
+                    disabled
+                    onChange={(e) =>
+                      handleUpdateRow(
+                        index,
+                        "movingTime",
+                        e.currentTarget.value
+                      )
                     }
                   />
                 </TableCell>
@@ -143,13 +169,10 @@ function Index({ selectedVessel }: SimulationResultProps) {
                 <TableCell className={classes.tableCell} align="center">
                   <TextField
                     id="standard-basic"
-                    value={get(row, "created_at")}
+                    value={get(row, "createdAt")}
+                    disabled
                     onChange={(e) =>
-                      handleUpdateRow(
-                        index,
-                        "created_at",
-                        e.currentTarget.value
-                      )
+                      handleUpdateRow(index, "createdAt", e.currentTarget.value)
                     }
                   />
                 </TableCell>

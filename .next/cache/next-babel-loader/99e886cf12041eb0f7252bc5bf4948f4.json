@@ -1,1 +1,0 @@
-{"ast":null,"code":"export const forEach = (e, iterate) => {\n  const keys = Object.keys(e);\n  return keys.forEach((k, i) => iterate({\n    key: k,\n    value: e[k]\n  }, i));\n};","map":null,"metadata":{},"sourceType":"module"}

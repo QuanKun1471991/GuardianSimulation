@@ -1,6 +1,9 @@
 import produce from "immer";
 import GeoJSON from "ol/format/GeoJSON";
 import { round } from "lodash";
+import Projection from "ol/proj/Projection";
+import Point from "ol/geom/Point";
+import { getDistance } from "ol/sphere";
 
 export enum MapLayers {
   Vessel = "vessel",
@@ -68,3 +71,12 @@ export const formatVesselFeatures = (dataFeatures: FeaturesProfile[]) => {
 
   return new GeoJSON(CONVERT_PROJECTION).readFeatures(geoJson);
 };
+
+export const getDistanceBetweenPoints = (
+  startCoordinate: [],
+  endCoordinate: []
+) => {
+  return getDistance(startCoordinate, endCoordinate);
+};
+
+export const convertKnotToMeter = (knot: number) => knot * 0.514444;

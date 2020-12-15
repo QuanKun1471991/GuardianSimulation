@@ -1,1 +1,0 @@
-{"ast":null,"code":"import { createMemoSelector } from \"services/_base/selectors\";\nexport const PortSelector = createMemoSelector(state => {\n  const {\n    loading,\n    data\n  } = state.port;\n  return {\n    loading,\n    data\n  };\n}, portResult => portResult);","map":null,"metadata":{},"sourceType":"module"}

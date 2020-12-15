@@ -4,6 +4,14 @@ import genReducers from "services/_base/reducers";
 import { BaseActions } from "./actions";
 import { VesselActions, VesselActionTypes, IVesselState } from "./types";
 
+export const initialSimulationRoutes = {
+  show: false,
+  data: [],
+  loading: false,
+  update: false,
+  error: null,
+};
+
 export const initialState: IVesselState = {
   loading: false,
   error: "",
@@ -17,13 +25,7 @@ export const initialState: IVesselState = {
     name: null,
     imo: null,
     mmsi: null,
-    simulationRoutes: {
-      show: false,
-      data: [],
-      loading: false,
-      update: false,
-      error: null,
-    },
+    simulationRoutes: initialSimulationRoutes,
   },
 };
 
