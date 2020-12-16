@@ -165,6 +165,9 @@ const Index: NextPage = () => {
             name: featureClicked.get("name"),
             imo: featureClicked.get("imo"),
             mmsi: featureClicked.get("mmsi"),
+            last_position_updated_at: featureClicked.get(
+              "last_position_updated_at"
+            ),
             simulationRoutes: initialSimulationRoutes,
           })
         );

@@ -25,6 +25,7 @@ export const initialState: IVesselState = {
     name: null,
     imo: null,
     mmsi: null,
+    last_position_updated_at: null,
     simulationRoutes: initialSimulationRoutes,
   },
 };

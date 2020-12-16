@@ -1,6 +1,3 @@
-import moment from "moment";
-import { round } from "lodash";
-
 export const simulationFormatMessage = (data: any) => {
   const {
     mmsi,
@@ -20,7 +17,7 @@ export const simulationFormatMessage = (data: any) => {
     mmsi,
     nmea: "!AIVDM,1,1,,B,137g`F001T1ud71dQgh2nR480000,0*2A",
     distance,
-    movingTime: round(movingTime / 3600, 2),
+    movingTime,
     speed: speed || 25,
     course: 73,
     msg_id: "1594941958_209447000",

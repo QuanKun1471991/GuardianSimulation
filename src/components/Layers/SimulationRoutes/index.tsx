@@ -87,10 +87,10 @@ function Index({ guardianMap, selectedVessel }: SimulationRoutesProps) {
       show: showSimulationRoutes,
     },
     mmsi,
+    last_position_updated_at: lastPositionUpdatedAt,
   } = selectedVessel;
-  const createdAtTime = moment().subtract(1, "year");
+  const createdAtTime = moment(lastPositionUpdatedAt);
   const [openDialog, setOpenDialog] = React.useState(false);
-  let sketch;
 
   const draw = new ol.interaction.Draw({
     source: vectorSource,
@@ -129,17 +129,15 @@ function Index({ guardianMap, selectedVessel }: SimulationRoutesProps) {
             YYYY_MM_DD_HH_MM_SS
           );
 
-          const message = simulationFormatMessage({
+          return simulationFormatMessage({
             mmsi,
             heading,
             distance,
             longLatCoord,
             timeStamp,
             createdAt,
-            movingTime,
+            movingTime: round(movingTime / 3600, 2),
           });
-
-          return message;
         }
         return null;
       });
@@ -201,8 +199,9 @@ function Index({ guardianMap, selectedVessel }: SimulationRoutesProps) {
               distance,
               timeStamp,
               createdAt,
+              movingTime,
             } = SimulationRoutesData[index - 1];
-            const message = simulationFormatMessage({
+            return simulationFormatMessage({
               mmsi,
               heading,
               distance,
@@ -210,9 +209,8 @@ function Index({ guardianMap, selectedVessel }: SimulationRoutesProps) {
               timeStamp,
               speed,
               createdAt,
+              movingTime,
             });
-
-            return message;
           }
           return null;
         });
