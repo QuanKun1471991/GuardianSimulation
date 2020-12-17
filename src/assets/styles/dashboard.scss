@@ -1,12 +1,12 @@
 .root {
-  position: fixed,
+  position: fixed;
+  width: 100%;
 }
 .map {
   min-height: 532px;
   position: relative;
   max-height: 1000px;
   height: calc(100vh - 64px);
-  min-width: 1500px;
   outline: none;
   .ol-zoom {
     margin-right: 98%;

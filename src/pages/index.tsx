@@ -79,7 +79,6 @@ const Index: NextPage = () => {
   const [isShowVesselInfo, setIsShowVesselInfo] = useState(false);
   const {
     name,
-    imo,
     simulationRoutes: { show },
   } = selectedVessel;
 
@@ -142,8 +141,8 @@ const Index: NextPage = () => {
       })
     );
   }, [dispatch]);
-  useEffect(() => {
-    const handleClickMap = (e) => {
+  const handleClickMap = useCallback(
+    (e) => {
       const { pixel } = e;
       const features = guardianMap.getFeaturesAtPixel(pixel);
       const featureClicked = features[0];
@@ -156,31 +155,40 @@ const Index: NextPage = () => {
         }
 
         zoomAfterClick(e.coordinate);
-        setSelectedFeature(featureClicked);
         setIsShowVesselInfo(true);
 
-        dispatch(
-          BaseFunctions.setState({
-            field: "selectedVessel",
-            name: featureClicked.get("name"),
-            imo: featureClicked.get("imo"),
-            mmsi: featureClicked.get("mmsi"),
-            last_position_updated_at: featureClicked.get(
-              "last_position_updated_at"
-            ),
-            simulationRoutes: initialSimulationRoutes,
-          })
-        );
+        if (selectedFeature?.get("imo") !== featureClicked.get("imo")) {
+          setSelectedFeature(featureClicked);
+          dispatch(
+            BaseFunctions.setState({
+              field: "selectedVessel",
+              name: featureClicked.get("name"),
+              imo: featureClicked.get("imo"),
+              mmsi: featureClicked.get("mmsi"),
+              last_position_updated_at: featureClicked.get(
+                "last_position_updated_at"
+              ),
+              simulationRoutes: initialSimulationRoutes,
+            })
+          );
+        }
       } else {
         setIsShowVesselInfo(false);
       }
       return null;
+    },
+    [zoomAfterClick, dispatch, selectedFeature, guardianMap]
+  );
+
+  useEffect(() => {
+    guardianMap?.un("click", handleClickMap);
+    guardianMap?.on("click", handleClickMap);
+
+    return () => {
+      guardianMap?.un("click", handleClickMap);
     };
-    if (guardianMap) {
-      guardianMap.on("click", handleClickMap);
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [guardianMap, zoomAfterClick, dispatch]);
+  }, [guardianMap, handleClickMap]);
 
   const handleClickSimulation = () => {
     dispatch(
